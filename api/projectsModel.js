@@ -12,61 +12,28 @@ module.exports = {
 		);
 	},
 
-	getByIdComplete: function(id) {
-		return db("projects")
-			.where("id", id)
-			.first()
-			.then(project => {
-				return db("actions")
-					.where("project_id", project.id)
-					.then(actions =>
-						actions.length === 0
-							? "There are no actions for this project"
-							: actions.map(action => mappers.displayTrueFalse(action))
-					);
-				return mappers.displayProjectComplete({
-					...project,
-					actions
-				});
-			});
-	},
-
-	// getByIdComplete: function(id) {
-	// 	let query = db("projects as p");
-
-	// 	if (id) {
-	// 		query.where("p.id", id).first();
-
-	// 		const promises = [query, this.getProjectActions(id)]; // [ projects, actions ]
-
-	// 		return Promise.all(promises).then(function(results) {
-	// 			let [project, actions] = results;
-
-	// 			if (project) {
-	// 				project.actions = actions;
-
-	// 				return mappers.displayProjectComplete(project);
-	// 			} else {
-	// 				return null;
-	// 			}
-	// 		});
-	// 	}
-
-	// 	return query.then(projects => {
-	// 		return projects.map(project => mappers.displayProjectComplete(project));
-	// 	});
-	// },
-
-	getById: function(id) {
+	getById: async function(id) {
+		const actions = await this.getProjectActions(id);
 		return db("projects")
 			.where("id", id)
 			.first()
 			.then(project =>
 				project
 					? mappers.displayTrueFalse({
-							...project
+							...project,
+							actions
 					  })
 					: null
+			);
+	},
+
+	getProjectActions: function(project_id) {
+		return db("actions")
+			.where({ project_id })
+			.then(actions =>
+				actions.length === 0
+					? "There are no actions for this project"
+					: actions.map(action => mappers.displayTrueFalse(action))
 			);
 	},
 
@@ -88,15 +55,5 @@ module.exports = {
 			.where("id", id)
 			.del()
 			.then(() => this.getAll());
-	},
-
-	getProjectActions: function(project_id) {
-		return db("actions")
-			.where({ project_id })
-			.then(actions =>
-				actions.length === 0
-					? "There are no actions for this project"
-					: actions.map(action => mappers.displayTrueFalse(action))
-			);
 	}
 };

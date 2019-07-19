@@ -19,21 +19,9 @@ router.get("/", async (req, res) => {
 	}
 });
 
-// router.get("/:id", middleware.checkProjectId, async (req, res) => {
-// 	try {
-// 		res.status(200).json(req.project);
-// 	} catch (error) {
-// 		console.log(error);
-// 		res.status(500).json({
-// 			error: "The information for the project specified could not be retrieved."
-// 		});
-// 	}
-// });
-
 router.get("/:id", middleware.checkProjectId, async (req, res) => {
 	try {
-		const pActions = await projectsDB.getProjectActions(req.params.id);
-		res.status(200).json({ ...req.project, actions: pActions });
+		res.status(200).json(req.project);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({
@@ -66,20 +54,25 @@ router.post("/", middleware.checkProject, async (req, res) => {
 	}
 });
 
-router.post("/:id/actions", middleware.checkAction, async (req, res) => {
-	try {
-		const action = await actionsDB.insert({
-			...req.body,
-			project_id: req.params.id
-		});
-		res.status(201).json(action);
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({
-			error: "There was an error while adding the action to the database"
-		});
+router.post(
+	"/:id/actions",
+	middleware.checkProjectId,
+	middleware.checkAction,
+	async (req, res) => {
+		try {
+			const action = await actionsDB.insert({
+				...req.body,
+				project_id: req.params.id
+			});
+			res.status(201).json(action);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json({
+				error: "There was an error while adding the action to the database"
+			});
+		}
 	}
-});
+);
 
 router.delete("/:id", middleware.checkProjectId, async (req, res) => {
 	try {
