@@ -11,16 +11,10 @@ module.exports = {
 				: "There are no actions for this project."
 		};
 	},
-	displayProject: function(project) {
+	displayTrueFalse: function(projectOrAction) {
 		return {
-			...project,
-			completed: project.completed === 1 ? true : false
-		};
-	},
-	displayAction: function(action) {
-		return {
-			...action,
-			completed: action.completed === 1 ? true : false
+			...projectOrAction,
+			completed: projectOrAction.completed === 1 ? true : false
 		};
 	}
 };

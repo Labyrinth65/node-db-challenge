@@ -11,9 +11,11 @@ module.exports = {
 			.where("id", id)
 			.first()
 			.then(action =>
-				mappers.displayAction({
-					...action
-				})
+				action
+					? mappers.displayTrueFalse({
+							...action
+					  })
+					: null
 			);
 	},
 
@@ -33,6 +35,7 @@ module.exports = {
 	remove: function(id) {
 		return db("actions")
 			.where("id", id)
-			.del();
+			.del()
+			.then(() => this.getAll());
 	}
 };

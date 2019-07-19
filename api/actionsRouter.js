@@ -32,8 +32,8 @@ router.get("/:id", middleware.checkActionId, async (req, res) => {
 router.delete("/:id", middleware.checkActionId, async (req, res) => {
 	try {
 		const count = await actionsDB.remove(req.params.id);
-		if (count > 0) {
-			res.status(200).json(req.action);
+		if (count !== 0) {
+			res.status(200).json(count);
 		}
 	} catch (error) {
 		console.log(error);

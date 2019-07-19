@@ -5,31 +5,31 @@ module.exports = {
 	getAll: function() {
 		return db("projects").then(projects =>
 			projects.map(project =>
-				mappers.displayProject({
+				mappers.displayTrueFalse({
 					...project
 				})
 			)
 		);
 	},
 
-	// getByIdComplete: function(id) {
-	// 	return db("projects")
-	// 		.where("id", id)
-	// 		.first()
-	// 		.then(project => {
-	// 			return mappers.displayProjectComplete({
-	// 				...project,
-	// 				actions: async (req, res) => {
-	// 					try {
-	// 						const pActions = await this.getProjectActions(project.id);
-	// 						res.json(pActions);
-	// 					} catch (error) {
-	// 						console.log(error);
-	// 					}
-	// 				}
-	// 			});
-	// 		});
-	// },
+	getByIdComplete: function(id) {
+		return db("projects")
+			.where("id", id)
+			.first()
+			.then(project => {
+				return db("actions")
+					.where("project_id", project.id)
+					.then(actions =>
+						actions.length === 0
+							? "There are no actions for this project"
+							: actions.map(action => mappers.displayTrueFalse(action))
+					);
+				return mappers.displayProjectComplete({
+					...project,
+					actions
+				});
+			});
+	},
 
 	// getByIdComplete: function(id) {
 	// 	let query = db("projects as p");
@@ -63,7 +63,7 @@ module.exports = {
 			.first()
 			.then(project =>
 				project
-					? mappers.displayProject({
+					? mappers.displayTrueFalse({
 							...project
 					  })
 					: null
@@ -96,7 +96,7 @@ module.exports = {
 			.then(actions =>
 				actions.length === 0
 					? "There are no actions for this project"
-					: actions.map(action => mappers.displayAction(action))
+					: actions.map(action => mappers.displayTrueFalse(action))
 			);
 	}
 };
