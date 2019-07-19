@@ -1,0 +1,28 @@
+{
+	"name": "node-db-challenge",
+	"version": "1.0.0",
+	"description": "node-db-challenge",
+	"main": "index.js",
+	"scripts": {
+		"server": "nodemon index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Labyrinth65/node-db-challenge.git"
+	},
+	"author": "Ang Xu",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Labyrinth65/node-db-challenge/issues"
+	},
+	"homepage": "https://github.com/Labyrinth65/node-db-challenge#readme",
+	"devDependencies": {
+		"nodemon": "^1.19.1"
+	},
+	"dependencies": {
+		"express": "^4.17.1",
+		"knex": "^0.19.0",
+		"knex-cleaner": "^1.2.1",
+		"sqlite3": "^4.0.9"
+	}
+}
