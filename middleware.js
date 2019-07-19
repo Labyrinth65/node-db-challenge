@@ -13,7 +13,7 @@ module.exports = {
 
 async function checkProjectId(req, res, next) {
 	try {
-		const project = await projectsDB.getByIdNoAct(req.params.id);
+		const project = await projectsDB.getById(req.params.id);
 		if (project) {
 			req.project = project;
 			next();

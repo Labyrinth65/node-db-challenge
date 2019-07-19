@@ -5,19 +5,19 @@ module.exports = {
 	getAll: function() {
 		return db("projects").then(projects =>
 			projects.map(project =>
-				mappers.dispProjNoAct({
+				mappers.displayProject({
 					...project
 				})
 			)
 		);
 	},
 
-	// getById: function(id) {
+	// getByIdComplete: function(id) {
 	// 	return db("projects")
 	// 		.where("id", id)
 	// 		.first()
 	// 		.then(project => {
-	// 			return mappers.displayProject({
+	// 			return mappers.displayProjectComplete({
 	// 				...project,
 	// 				actions: async (req, res) => {
 	// 					try {
@@ -31,7 +31,7 @@ module.exports = {
 	// 		});
 	// },
 
-	// getById: function(id) {
+	// getByIdComplete: function(id) {
 	// 	let query = db("projects as p");
 
 	// 	if (id) {
@@ -45,7 +45,7 @@ module.exports = {
 	// 			if (project) {
 	// 				project.actions = actions;
 
-	// 				return mappers.displayProject(project);
+	// 				return mappers.displayProjectComplete(project);
 	// 			} else {
 	// 				return null;
 	// 			}
@@ -53,25 +53,27 @@ module.exports = {
 	// 	}
 
 	// 	return query.then(projects => {
-	// 		return projects.map(project => mappers.displayProject(project));
+	// 		return projects.map(project => mappers.displayProjectComplete(project));
 	// 	});
 	// },
 
-	getByIdNoAct: function(id) {
+	getById: function(id) {
 		return db("projects")
 			.where("id", id)
 			.first()
 			.then(project =>
-				mappers.dispProjNoAct({
-					...project
-				})
+				project
+					? mappers.displayProject({
+							...project
+					  })
+					: null
 			);
 	},
 
 	insert: function(project) {
 		return db("projects")
 			.insert(project)
-			.then(([id]) => this.getByIdNoAct(id));
+			.then(([id]) => this.getById(id));
 	},
 
 	update: function(id, changes) {

@@ -1,5 +1,5 @@
 module.exports = {
-	displayProject: function(project) {
+	displayProjectComplete: function(project) {
 		return {
 			...project,
 			completed: project.completed === 1 ? true : false,
@@ -11,7 +11,7 @@ module.exports = {
 				: "There are no actions for this project."
 		};
 	},
-	dispProjNoAct: function(project) {
+	displayProject: function(project) {
 		return {
 			...project,
 			completed: project.completed === 1 ? true : false
